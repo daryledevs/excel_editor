@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import Home from "../page/Home";
 import PageIndex from "../page/Index";
 import List from "../page/List";
+import SpreadSheet from "../page/SpreadSheet";
 
 function RoutesIndex() {
   return (
@@ -17,6 +18,10 @@ function RoutesIndex() {
       <Route
         path="/list"
         element={<List />}
+      />
+      <Route
+        path="/spread-sheet"
+        element={<SpreadSheet />}
       />
     </Route>
   );

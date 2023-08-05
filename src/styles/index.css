@@ -33,6 +33,88 @@
   background-color: azure;
 }
 
+.spread-sheet__container {
+  width: 100%;
+}
+.spread-sheet__container .column__container {
+  border: 1px solid green;
+  display: flex;
+}
+.spread-sheet__container .column__container .column__row-number {
+  width: 2%;
+  text-align: center;
+}
+.spread-sheet__container .column__container .column__fields {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.spread-sheet__container .column__container .column__fields .column__parent {
+  display: flex;
+}
+.spread-sheet__container .column__container .column__fields .column__parent .column__row-number {
+  border: 1px solid blue;
+}
+.spread-sheet__container .column__container .column__fields .column__parent .columns__rows {
+  flex: 1;
+  display: flex;
+  flex-basis: 1;
+  border: 1px solid red;
+}
+
+.column-v-two__container {
+  display: flex;
+}
+.column-v-two__container .tangina {
+  display: flex;
+  flex-direction: column;
+}
+.column-v-two__container .tangina p {
+  width: 5vh;
+  border: 1px solid #ccc;
+  flex: 1;
+}
+.column-v-two__container .column-v-two__parent {
+  display: flex;
+  flex: 1;
+  flex-basis: 1;
+}
+.column-v-two__container .column-v-two__parent .column-v-two__column {
+  border: 1px solid #ccc;
+}
+.column-v-two__container .column-v-two__parent .column-v-two__column .column-v-two__cell {
+  display: flex;
+}
+
+.upload-file__container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 999999;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.upload-file__container img {
+  cursor: pointer;
+  position: absolute;
+  top: 1vh;
+  right: 1vh;
+  width: 4vh;
+}
+.upload-file__container .upload-file__parent {
+  background-color: white;
+  width: 26%;
+  height: 55%;
+  border-radius: 3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

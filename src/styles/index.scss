@@ -1,5 +1,7 @@
 @import "./page/Index";
-
+@import "./page/SpreadSheet";
+@import "./component/ColumnV2";
+@import "./shared/modal/UploadFile";
 * {
   box-sizing: border-box;
   padding: 0;

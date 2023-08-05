@@ -1,0 +1,34 @@
+.spread-sheet__container{
+  width: 100%;
+
+  .column__container{
+    border: 1px solid green;
+    display: flex;
+
+    .column__row-number{
+      width: 2%;
+      text-align: center;
+    }
+
+    .column__fields{
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+
+      .column__parent{
+        display: flex;
+
+        .column__row-number{
+          border: 1px solid blue;
+        }
+        
+        .columns__rows{
+          flex: 1;
+          display: flex;
+          flex-basis: 1;
+          border: 1px solid red;
+        }
+      }
+    }
+  }
+}

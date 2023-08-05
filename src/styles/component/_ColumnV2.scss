@@ -1,0 +1,26 @@
+.column-v-two__container {
+  display: flex;
+  .tangina {
+    display: flex;
+    flex-direction: column;
+    p {
+      width: 5vh;
+      border: 1px solid #ccc;
+      flex: 1;
+    }
+  }
+  .column-v-two__parent{
+    display: flex;
+    flex: 1;
+    flex-basis: 1;
+
+    .column-v-two__column{
+      border: 1px solid #ccc;
+
+      .column-v-two__cell{
+        display: flex;
+       
+      } 
+    }
+  }
+}
