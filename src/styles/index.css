@@ -86,6 +86,23 @@
   display: flex;
 }
 
+.column-v-three__container {
+  display: flex;
+}
+.column-v-three__container .column-v-three__parent {
+  display: flex;
+  flex: 1;
+}
+.column-v-three__container .column-v-three__parent .column-v-three__column .column-v-three__label {
+  display: flex;
+}
+.column-v-three__container .column-v-three__parent .column-v-three__column .column-v-three__header {
+  display: flex;
+}
+.column-v-three__container .column-v-three__parent .column-v-three__column .column-v-three__row .column-v-three__row-cell {
+  display: flex;
+}
+
 .upload-file__container {
   position: relative;
   width: 100%;

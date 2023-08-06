@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import * as XLSX from "xlsx";
 import ColumnV2 from '../component/ColumnV2';
+import ColumnV3 from '../component/ColumnV3';
 
 function List() {
   const [data, setData] = useState<any>([]);
   const [formulas, setFormulas] = useState<any>([]);
+  const [workbookData, setWorkbookData] = useState<any>();
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -21,7 +23,9 @@ function List() {
         });
 
         setData(jsonWorksheet);
+        setWorkbookData(workbook);
         console.log("jsonWorksheet: ", jsonWorksheet);
+        console.log("workbook: ", workbook);
 
         // Extract and store formulas separately
         const extractedFormulas = [];
@@ -49,8 +53,15 @@ function List() {
         type="file"
         id="fileUpload"
       />
-      {data.length ? (
+      {/* {data.length ? (
         <ColumnV2
+          data={data}
+          formulas={formulas}
+        />
+      ) : null} */}
+
+      {data.length ? (
+        <ColumnV3
           data={data}
           formulas={formulas}
         />
