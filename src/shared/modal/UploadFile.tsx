@@ -1,6 +1,9 @@
 import React, { useCallback } from "react";
 import closeWhite from "../../assets/icon/close-white.png";
 import { useDropzone } from "react-dropzone";
+import { useAppDispatch } from "../../redux/hooks/hooks";
+import { getUpload } from "../../redux/uploadFileSlice";
+import * as XLSX from "xlsx";
 
 interface IEUploadFile {
   uploadFileTrigger: boolean;
@@ -8,22 +11,55 @@ interface IEUploadFile {
 }
 
 function UploadFile({  uploadFileTrigger, setUploadFileTrigger} : IEUploadFile) {
+  const dispatch = useAppDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onDrop = useCallback((acceptedFiles:any) => {
-    acceptedFiles.forEach((file: File) => {
-      const reader = new FileReader();
+  const onDrop = useCallback(
+    (acceptedFiles: any) => {
+      acceptedFiles.forEach((file: File) => {
+        const reader = new FileReader();
 
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result;
-        console.log(binaryStr);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  }, []);
+        reader.onabort = () => console.log("file reading was aborted");
+        reader.onerror = () => console.log("file reading has failed");
+        reader.onload = (e) => {
+          const filename = file.name
+          const fileData = e.target.result;
+          const workbook = XLSX.read(fileData, { type: "binary" });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const jsonWorksheet = XLSX.utils.sheet_to_json(worksheet, {
+            raw: true,
+          });
+
+          // Extract and store formulas separately
+          const extractedFormulas = [];
+          for (const cellAddress in worksheet) {
+            if (!worksheet.hasOwnProperty(cellAddress)) continue;
+
+            const cell = worksheet[cellAddress];
+            if (cell.f) {
+              extractedFormulas.push({ cell: cellAddress, formula: cell.f });
+            }
+          }
+          const data = {
+            filename,
+            jsonWorksheet,
+            workbook,
+            extractedFormulas,
+          };
+
+          dispatch(getUpload(data));
+          console.log("jsonWorksheet: ", jsonWorksheet);
+          console.log("workbook: ", workbook);
+          console.log("extractedFormulas", extractedFormulas);
+        };
+
+        reader.readAsArrayBuffer(file);
+        setUploadFileTrigger((prev) => !prev);
+      });
+    },
+    [uploadFileTrigger]
+  );
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 

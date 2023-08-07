@@ -1,69 +1,69 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as XLSX from "xlsx";
 import ColumnV2 from '../component/ColumnV2';
 import ColumnV3 from '../component/ColumnV3';
+import { useAppSelector } from '../redux/hooks/hooks';
 
 function List() {
   const [data, setData] = useState<any>([]);
-  const [formulas, setFormulas] = useState<any>([]);
-  const [workbookData, setWorkbookData] = useState<any>();
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const fileData = e.target.result;
-        const workbook = XLSX.read(fileData, { type: "binary" });
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[firstSheetName];
-        const jsonWorksheet = XLSX.utils.sheet_to_json(worksheet, {
-          raw: true,
-        });
-
-        setData(jsonWorksheet);
-        setWorkbookData(workbook);
-        console.log("jsonWorksheet: ", jsonWorksheet);
-        console.log("workbook: ", workbook);
-
-        // Extract and store formulas separately
-        const extractedFormulas = [];
-        for (const cellAddress in worksheet) {
-          if (!worksheet.hasOwnProperty(cellAddress)) continue;
-          
-          const cell = worksheet[cellAddress];
-          if (cell.f) {
-            extractedFormulas.push({ cell: cellAddress, formula: cell.f });
-          }
-        }
-        setFormulas(extractedFormulas);
-        console.log("extractedFormulas", extractedFormulas);
-      };
-      reader.readAsBinaryString(file);
-    }
-  };
-
+  const uploads = useAppSelector((state) => state.upload);
 
   return (
     <div style={{ width: "100%" }}>
-      <label htmlFor="fileUpload"></label>
+      {uploads.length
+        ? uploads.map((item, index) => {
+            const modifiedDate = item.workbook.Props.ModifiedDate;
+            const getCurrentDateTime = () => {
+              const currentDate = new Date();
+              const options = {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                second: "numeric",
+                hour12: true,
+              };
+              return currentDate.toLocaleString("en-PH", options);
+            };
+            return (
+              <div style={{ display: "flex", gap: "2%", marginLeft: "2%" }}>
+                <p
+                  style={{ fontWeight: "bold" }}
+                  onClick={() => {
+                    setData(item);
+                  }}
+                >
+                  {item.filename}
+                </p>
+                <p>
+                  <span style={{ fontWeight: "bold" }}>Modified Date:{" "}</span>
+                  {modifiedDate.toLocaleString()}
+                </p>
+                <p>
+                  <span style={{ fontWeight: "bold" }}>Date:</span>{" "}
+                  {getCurrentDateTime()}
+                </p>
+              </div>
+            );
+          })
+        : null}
+      {/* <label htmlFor="fileUpload"></label>
       <input
         onChange={handleFileUpload}
         type="file"
         id="fileUpload"
-      />
+      /> */}
       {/* {data.length ? (
         <ColumnV2
           data={data}
           formulas={formulas}
         />
       ) : null} */}
-
-      {data.length ? (
+      {Object.keys(data).length ? (
         <ColumnV3
-          data={data}
-          formulas={formulas}
+          data={data.jsonWorksheet}
+          formulas={data.extractedFormulas}
         />
       ) : null}
     </div>
