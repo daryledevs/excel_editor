@@ -28,12 +28,15 @@ function ColumnV3({ data, formulas }: any) {
    setTableData(updatedTableData);
  };
 
-  const handleCellChange = (event, rowIndex, columnName) => {
-    const { value } = event.target;
-    let updatedData = [...tableData];
-    updatedData[rowIndex][columnName] = value;
-    setTableData(updatedData);
-  };
+ const handleCellChange = (event, rowIndex, columnName) => {
+   const { value } = event.target;
+   setTableData((prevData:any) =>
+     prevData.map((row, index) =>
+       index === rowIndex ? { ...row, [columnName]: value } : row
+     )
+   );
+ };
+
 
   return (
     <div className="column-v-three__container">

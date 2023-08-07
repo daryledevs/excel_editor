@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import * as XLSX from "xlsx";
 import ColumnV2 from '../component/ColumnV2';
 import ColumnV3 from '../component/ColumnV3';
+import SpreadSheet from './SpreadSheet';
 import { useAppSelector } from '../redux/hooks/hooks';
+import { useNavigate } from "react-router-dom";
+import { options } from '../assets/data/date.options';
 
 function List() {
   const [data, setData] = useState<any>([]);
   const uploads = useAppSelector((state) => state.upload);
+  const navigate = useNavigate();
 
   return (
     <div style={{ width: "100%" }}>
@@ -14,23 +18,17 @@ function List() {
         ? uploads.map((item, index) => {
             const getCurrentDateTime = () => {
               const currentDate = new Date();
-              const options = {
-                day: "numeric",
-                month: "numeric",
-                year: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric",
-                hour12: true,
-              };
               return currentDate.toLocaleString("en-PH", options);
             };
             return (
-              <div style={{ display: "flex", gap: "2%", marginLeft: "2%" }}>
+              <div 
+                style={{ display: "flex", gap: "2%", marginLeft: "2%" }}
+                >
                 <p
                   style={{ fontWeight: "bold" }}
                   onClick={() => {
                     setData(item);
+                    navigate("/spread-sheet", { state: { data: item } });
                   }}
                 >
                   {item.filename}
@@ -47,24 +45,6 @@ function List() {
             );
           })
         : null}
-      {/* <label htmlFor="fileUpload"></label>
-      <input
-        onChange={handleFileUpload}
-        type="file"
-        id="fileUpload"
-      /> */}
-      {/* {data.length ? (
-        <ColumnV2
-          data={data}
-          formulas={formulas}
-        />
-      ) : null} */}
-      {Object.keys(data).length ? (
-        <ColumnV3
-          data={data.jsonWorksheet}
-          formulas={data.extractedFormulas}
-        />
-      ) : null}
     </div>
   );
 }
