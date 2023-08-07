@@ -30,7 +30,7 @@ function ColumnV3({ data, formulas }: any) {
 
   const handleCellChange = (event, rowIndex, columnName) => {
     const { value } = event.target;
-    const updatedData = [...tableData];
+    let updatedData = [...tableData];
     updatedData[rowIndex][columnName] = value;
     setTableData(updatedData);
   };
