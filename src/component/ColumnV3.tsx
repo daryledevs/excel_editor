@@ -3,7 +3,11 @@ import { createStringIdGenerator } from "../util/stringGenerator";
 
 function ColumnV3({ data, formulas }: any) {
   const generator = createStringIdGenerator();
-  const [tableData, setTableData] = useState(data);
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    setTableData(data);
+  }, [data]);
 
   function element(index: any, content:any){
     const styles = { width: "3vh", textAlign: "center" as const };
@@ -34,42 +38,42 @@ function ColumnV3({ data, formulas }: any) {
   return (
     <div className="column-v-three__container">
       <div className="column-v-three__parent">
-        {Object.keys(tableData?.[0]).map((header, columnIndex) => (
-          <div
-            className="column-v-three__column"
-            key={columnIndex}
-          >
-            <div className="column-v-three__label">
-              {element(columnIndex, "_")}
-              <p>{generator.next()}</p>
-            </div>
-            <div className="column-v-three__header">
-              {element(columnIndex, 1)}
-              <input
-                value={header}
-                onChange={(event) =>
-                  handleHeaderChange(event, header)
-                }
-              />
-            </div>
-            {tableData?.map((items, rowIndex) => (
-              <div
-                className="column-v-three__row"
-                key={rowIndex}
-              >
-                <div className="column-v-three__row-cell">
-                  {element(columnIndex, rowIndex + 2)}
-                  <input
-                    value={tableData?.[rowIndex][header]}
-                    onChange={(event) =>
-                      handleCellChange(event, rowIndex, header)
-                    }
-                  />
-                </div>
+        {tableData?.length ? Object
+          .keys(tableData?.[0])
+          .map((header, columnIndex) => (
+            <div
+              className="column-v-three__column"
+              key={columnIndex}
+            >
+              <div className="column-v-three__label">
+                {element(columnIndex, "_")}
+                <p>{generator.next()}</p>
               </div>
-            ))}
-          </div>
-        ))}
+              <div className="column-v-three__header">
+                {element(columnIndex, 1)}
+                <input
+                  value={header}
+                  onChange={(event) => handleHeaderChange(event, header)}
+                />
+              </div>
+              {tableData?.map((items, rowIndex) => (
+                <div
+                  className="column-v-three__row"
+                  key={rowIndex}
+                >
+                  <div className="column-v-three__row-cell">
+                    {element(columnIndex, rowIndex + 2)}
+                    <input
+                      value={tableData?.[rowIndex][header]}
+                      onChange={(event) =>
+                        handleCellChange(event, rowIndex, header)
+                      }
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )) : null}
       </div>
     </div>
   );

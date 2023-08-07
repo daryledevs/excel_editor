@@ -12,7 +12,6 @@ function List() {
     <div style={{ width: "100%" }}>
       {uploads.length
         ? uploads.map((item, index) => {
-            const modifiedDate = item.workbook.Props.ModifiedDate;
             const getCurrentDateTime = () => {
               const currentDate = new Date();
               const options = {
@@ -37,8 +36,8 @@ function List() {
                   {item.filename}
                 </p>
                 <p>
-                  <span style={{ fontWeight: "bold" }}>Modified Date:{" "}</span>
-                  {modifiedDate.toLocaleString()}
+                  <span style={{ fontWeight: "bold" }}>Modified Date: </span>
+                  {item.workbook.Props.ModifiedDate?.toLocaleString()}
                 </p>
                 <p>
                   <span style={{ fontWeight: "bold" }}>Date:</span>{" "}
